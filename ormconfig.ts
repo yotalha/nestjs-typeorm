@@ -12,3 +12,6 @@ const config: MysqlConnectionOptions = {
 }
 
 export default config;
+
+// "typeorm": "typeorm-ts-node-commonjs",
+

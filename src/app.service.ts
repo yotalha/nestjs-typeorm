@@ -1,11 +1,21 @@
 import { Injectable } from '@nestjs/common';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
+import { ContactInfo } from './contact-info.entity';
+import { Employee } from './employee.entity';
+import { Meeting } from './meeting.entity';
+import { Task } from './task.entity';
 import { User } from './user.entity';
 
 @Injectable()
 export class AppService {
-  constructor(@InjectRepository(User) private usersRepository: Repository<User>){}
+  constructor(
+    @InjectRepository(User) private usersRepository: Repository<User>,
+    @InjectRepository(Employee) private employeeRepo: Repository<Employee>,
+    @InjectRepository(ContactInfo) private contactInfoRepo: Repository<ContactInfo>,
+    @InjectRepository(Meeting) private meetingRepo: Repository<Meeting>,
+    @InjectRepository(Task) private taskRepo: Repository<Task>,
+  ){}
 
   async getAll(): Promise<User[]> {
     return await this.usersRepository.find({
@@ -44,4 +54,20 @@ export class AppService {
   getHello(): string {
     return 'Hello World!';
   }
+
+  //------------------------------------------------------------------
+
+
+  async seed() {
+    const ceo = this.employeeRepo.create({ name: 'Mr. CEO' });
+    await this.employeeRepo.save(ceo);
+
+    const ceoContactInfo = this.contactInfoRepo.create({
+       email: 'ceo@test.com',
+      //  employeeId: ceo.id 
+    });
+
+    ceoContactInfo.employee = ceo;
+    await this.contactInfoRepo.save(ceoContactInfo);
+  }  
 }

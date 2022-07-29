@@ -6,9 +6,10 @@ const config: MysqlConnectionOptions = {
     port: 3306,
     username: 'root',
     password: 'password',
-    database: 'test',
-    entities: ['dist/src/**/*.entity.js'],
+    database: 'test1',
+    entities: ['build/**/*.entity.js'],
     synchronize: true,
+    logging: true
 }
 
 export default config;
